@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns: th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+	crossorigin="anonymous">
+
+</head>
+<body>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous"></script>
+
+	<style>
+.b-example-divider {
+	height: 3rem;
+	background-color: rgba(0, 0, 0, .1);
+	border: solid rgba(0, 0, 0, .15);
+	border-width: 1px 0;
+	box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em
+		rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+	flex-shrink: 0;
+	width: 1.5rem;
+	height: 100vh;
+}
+
+.bi {
+	vertical-align: -.125em;
+	fill: currentColor;
+}
+</style>
+
+	<main class="d-flex flex-nowrap">
+
+
+		<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+			style="width: 280px;">
+
+			<div class="badge bg-secondary text-wrap">
+
+				<img th:src="@{/img/korzina.jpg}" alt="" width="32" height="32"
+					class="rounded-circle me-2"><span class=" fs-4 ">Корзина</span>
+
+			</div>
+
+			<hr>
+
+
+			<ul class="nav nav-pills flex-column mb-auto">
+
+				<li><a href="/masterdetailtest/positions"
+					class="nav-link text-white "> <svg class="bi pe-none me-2"
+							width="16" height="16">
+							</svg> Товары в корзине
+				</a></li>
+
+				<li class="nav-item"><a href="/masterdetailtest/items"
+					class="nav-link text-white active" aria-current="page"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+							</svg> Все товары
+				</a></li>
+
+				<li><a href="/masterdetailtest/checkout" class="nav-link text-white"> <svg
+							class="bi pe-none me-2" width="16" height="16">
+							</svg> Оформить заказ
+				</a></li>
+
+			</ul>
+			<hr>
+		</div>
+
+
+		<div class="b-example-divider b-example-vr"></div>
+
+		<div class="container border">
+			<div class="row text-center ">
+
+				<div class="col-12 text-white bg-dark">
+					<span class="fs-5 fw-semibold"><strong>Товары в
+							корзине</strong></span>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col">
+					<span class="fs-5 fw-semibold"><strong>Наименование</strong></span>
+				</div>
+				<div class="col">
+					<span class="fs-5 fw-semibold"><strong>Цена</strong></span>
+				</div>
+				<div class="col">
+					<span class="fs-5 fw-semibold"><strong>Действие</strong></span>
+				</div>
+
+			</div>
+
+			<div th:each="item : ${items.getContent()}">
+				<div class="row align-items-start">
+					<div class="col" th:text="${item.getName()}">
+						<span class="fs-5 fw-semibold"></span>
+					</div>
+					<div class="col" th:text="${item.getPrice()}">
+						<span class="fs-5 fw-semibold"></span>
+					</div>
+					<div class="col">
+						<a th:href="@{positions/add?itemId={itemId}(itemId=${item.getId()})}"><button
+								type="button" class="btn btn-secondary btn-sm">Добавить в корзину</button></a>
+								
+						<a th:href="@{items/delete?id={id}(id=${item.getId()})}"><button
+								type="button" class="btn btn-secondary btn-sm">Удалить товар</button></a>
+					</div>
+				</div>
+			</div>
+
+			<ul class="pagination" th:if="${items.getTotalPages() - 1 > 0}">
+				<li class="page-item"
+					th:each="pageNumber : ${#numbers.sequence(0, (items.getTotalPages() - 1))}"
+					th:class="${pageNumber==items.number} ? active"><a
+					class="page-link"
+					th:href="@{/masterdetailtest/items(page=${pageNumber}, size=10)}"
+					th:text="${pageNumber+1}"></a></li>
+			</ul>
+
+
+			<div class="row">
+				<a href="/masterdetailtest/items/new">
+					<button type="button" class="btn btn-secondary ">Добавить
+						новый товар</button>
+				</a>
+			</div>
+
+		</div>
+
+
+
+		<div class="b-example-divider b-example-vr"></div>
+
+
+
+	</main>
+
+</body>
+</html>
